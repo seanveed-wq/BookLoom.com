@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio App - Login</title>
+</head>
+<body>
+  <h1>Welcome to Audio App</h1>
+
+  <h2>Sign Up / Login</h2>
+
+  <input id="email" type="text" placeholder="Email"><br><br>
+  <input id="password" type="password" placeholder="Password"><br><br>
+
+  <button id="signupBtn">Sign Up</button>
+  <button id="loginBtn">Login</button>
+
+  <p id="status"></p>
+
+  <script type="module">
+    import { signupUser, loginUser } from "./app.js";
+
+    const status = document.getElementById("status");
+
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      try {
+        await signupUser(
+          document.getElementById("email").value,
+          document.getElementById("password").value
+        );
+        status.innerText = "Signup successful!";
+      } catch(err) {
+        status.innerText = "Error: " + err.message;
+      }
+    });
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      try {
+        await loginUser(
+          document.getElementById("email").value,
+          document.getElementById("password").value
+        );
+        status.innerText = "Login successful!";
+      } catch(err) {
+        status.innerText = "Error: " + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
