@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookloom Dashboard</title>
+
+<style>
+/* -------------------- ROOT THEME VARIABLES -------------------- */
+:root {
+  --bg: #0f172a;
+  --text: #ffffff;
+  --card: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+
+  --accent-a: #ff5cac;
+  --accent-b: #4ef5a1;
+  --accent-c: #7a6eff;
+  --muted: rgba(255,255,255,0.75);
+}
+
+/* LIGHT MODE VARIABLES */
+.light {
+  --bg: #f7f7fa;
+  --text: #0e1120;
+  --card: #ffffff;
+  --border: rgba(0,0,0,0.08);
+}
+
+/* -------------------- GLOBAL STYLES -------------------- */
+*{box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* -------------------- SIDEBAR -------------------- */
+.sidebar {
+  width:250px;
+  background:#111827;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  transition:0.3s;
+}
+.sidebar.collapsed {
+  width:70px;
+}
+.sidebar .logo {
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+.sidebar button.toggle {
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-weight:700;
+  background:linear-gradient(90deg,var(--accent-a),var(--accent-c));
+}
+.nav-item {
+  padding:12px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.2s;
+}
+.nav-item:hover {
+  background:rgba(255,255,255,0.06);
+}
+
+/* -------------------- MAIN AREA -------------------- */
+.main {
+  flex:1;
+  padding:24px;
+  overflow-y:auto;
+  animation:fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+  from {opacity:0;}
+  to {opacity:1;}
+}
+
+/* -------------------- TOP BAR -------------------- */
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+/* Search */
+.search input {
+  padding:10px 14px;
+  width:280px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  outline:none;
+}
+
+/* Theme toggle */
+#themeToggle {
+  padding:8px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  border:none;
+  font-weight:700;
+}
+
+/* Profile dropdown */
+.profile {
+  position:relative;
+}
+.profile-btn {
+  background:var(--card);
+  padding:10px;
+  border-radius:50%;
+  cursor:pointer;
+  border:1px solid var(--border);
+}
+.dropdown {
+  position:absolute;
+  right:0;
+  top:50px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  display:none;
+  min-width:150px;
+}
+.dropdown.active { display:block; }
+
+/* -------------------- BOOK GRID -------------------- */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:20px;
+}
+.card {
+  padding:14px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+.card .thumb {
+  height:140px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--accent-b),var(--accent-a));
+  margin-bottom:12px;
+}
+.card button {
+  padding:8px 12px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--accent-a),var(--accent-c));
+  cursor:pointer;
+}
+
+/* -------------------- AUDIO PLAYER -------------------- */
+.player {
+  margin-top:20px;
+  padding:20px;
+  border-radius:16px;
+  background:var(--card);
+  border:1px solid var(--border);
+}
+.player input[type="range"] {
+  width:100%;
+}
+
+/* -------------------- PAYMENT FORM -------------------- */
+.payment-box {
+  margin-top:30px;
+  padding:20px;
+  background:var(--card);
+  border-radius:14px;
+}
+.payment-box input {
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  margin-bottom:10px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+}
+.payment-box button {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,var(--accent-a),var(--accent-c));
+  font-weight:700;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- -------------------- SIDEBAR -------------------- -->
+<div class="sidebar" id="side">
+  <div class="logo">📚 Bookloom</div>
+  <button class="toggle" onclick="toggleSidebar()">☰ Menu</button>
+  <div class="nav-item">Dashboard</div>
+  <div class="nav-item">Library</div>
+  <div class="nav-item">Payments</div>
+  <div class="nav-item">Settings</div>
+</div>
+
+<!-- -------------------- MAIN AREA -------------------- -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="search">
+      <input type="text" placeholder="Search books..." />
+    </div>
+
+    <button id="themeToggle">Light/Dark</button>
+
+    <div class="profile">
+      <div class="profile-btn" onclick="toggleProfile()">👤</div>
+      <div class="dropdown" id="profileMenu">
+        <div class="nav-item">My Profile</div>
+        <div class="nav-item">Settings</div>
+        <div class="nav-item">Logout</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOK GRID -->
+  <h2>Newest Books</h2>
+  <div class="grid" id="books"></div>
+
+  <!-- AUDIO PLAYER -->
+  <div class="player">
+    <h3>Audio Player</h3>
+    <button onclick="toggleAudio()">Play / Pause</button>
+    <input type="range" id="seek" min="0" max="100" />
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="payment-box">
+    <h3>Add Payment Method</h3>
+    <input type="text" placeholder="Card Number">
+    <input type="text" placeholder="Expiry Date">
+    <input type="text" placeholder="CVV">
+    <button>Save Card</button>
+  </div>
+
+</div>
+
+<script>
+/* -------------------- SIDEBAR COLLAPSE -------------------- */
+function toggleSidebar(){
+  document.getElementById("side").classList.toggle("collapsed");
+}
+
+/* -------------------- DARK / LIGHT MODE -------------------- */
+document.getElementById("themeToggle").onclick = () => {
+  document.body.classList.toggle("light");
+};
+
+/* -------------------- PROFILE DROPDOWN -------------------- */
+function toggleProfile(){
+  document.getElementById("profileMenu").classList.toggle("active");
+}
+
+/* -------------------- LOAD BOOKS (API READY) -------------------- */
+const demoBooks = [
+  { title:"Atomic Habits" },
+  { title:"Rich Dad Poor Dad" },
+  { title:"Deep Work" },
+  { title:"The Alchemist" }
+];
+function loadBooks(){
+  let grid = document.getElementById("books");
+  demoBooks.forEach(b => {
+    grid.innerHTML += `
+      <div class="card">
+        <div class="thumb"></div>
+        <h4>${b.title}</h4>
+        <button>Listen</button>
+      </div>
+    `;
+  });
+}
+loadBooks();
+
+/* -------------------- AUDIO PLAYER MOCK -------------------- */
+function toggleAudio(){
+  alert("Audio Player Logic Here");
+}
+</script>
+
+</body>
+  </html>
