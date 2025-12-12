@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookloom Dashboard</title>
+
+  <!-- =====================
+       GOOGLE FONT
+  ====================== -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =====================
+       CSS VARIABLES (THEME)
+    ====================== */
+    :root {
+      --bg-main: #0b1220;
+      --bg-card: #111827;
+      --bg-sidebar: #0f172a;
+      --primary: linear-gradient(135deg, #ec4899, #8b5cf6);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border: #1f2937;
+      --radius: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    /* =====================
+       LAYOUT
+    ====================== */
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* =====================
+       SIDEBAR
+    ====================== */
+    .sidebar {
+      width: 230px;
+      background: var(--bg-sidebar);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .menu-btn {
+      background: var(--primary);
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--text-main);
+      padding: 10px 12px;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+
+    .nav a:hover {
+      background: #1f2937;
+    }
+
+    /* =====================
+       MAIN CONTENT
+    ====================== */
+    .main {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* =====================
+       TOP BAR
+    ====================== */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .search {
+      width: 60%;
+      padding: 10px 14px;
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-main);
+    }
+
+    .toggle {
+      background: #020617;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    /* =====================
+       BOOK GRID
+    ====================== */
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .cover {
+      height: 120px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #34d399, #ec4899);
+      margin-bottom: 12px;
+    }
+
+    .card h4 {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .listen {
+      background: var(--primary);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* =====================
+       AUDIO PLAYER
+    ====================== */
+    .player {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .player button {
+      width: 100px;
+      background: #020617;
+      border: 1px solid var(--border);
+      color: white;
+      padding: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    /* =====================
+       PAYMENT FORM
+    ====================== */
+    .payment {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .payment input {
+      padding: 10px;
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: white;
+    }
+
+    .save {
+      background: var(--primary);
+      border: none;
+      padding: 10px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* =====================
+       RESPONSIVE
+    ====================== */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .search { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">📚 Bookloom</div>
+    <button class="menu-btn">☰ Menu</button>
+    <nav class="nav">
+      <a href="#">Dashboard</a>
+      <a href="#">Library</a>
+      <a href="#">Payments</a>
+      <a href="#">Settings</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <input class="search" placeholder="Search books..." />
+      <button class="toggle">Light / Dark</button>
+    </div>
+
+    <!-- BOOKS -->
+    <h3 class="section-title">Newest Books</h3>
+    <div class="grid">
+      <div class="card">
+        <div class="cover"></div>
+        <h4>Atomic Habits</h4>
+        <button class="listen">Listen</button>
+      </div>
+      <div class="card">
+        <div class="cover"></div>
+        <h4>Rich Dad Poor Dad</h4>
+        <button class="listen">Listen</button>
+      </div>
+      <div class="card">
+        <div class="cover"></div>
+        <h4>Deep Work</h4>
+        <button class="listen">Listen</button>
+      </div>
+      <div class="card">
+        <div class="cover"></div>
+        <h4>The Alchemist</h4>
+        <button class="listen">Listen</button>
+      </div>
+    </div>
+
+    <!-- AUDIO PLAYER -->
+    <div class="player">
+      <h3 class="section-title">Audio Player</h3>
+      <button>Play / Pause</button>
+      <input type="range" />
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="payment">
+      <h3 class="section-title">Add Payment Method</h3>
+      <input placeholder="Card Number" />
+      <input placeholder="Expiry Date" />
+      <input placeholder="CVV" />
+      <button class="save">Save Card</button>
+    </div>
+
+  </main>
+</div>
+
+</body>
+  </html>
+  
